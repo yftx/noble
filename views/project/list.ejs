@@ -1,0 +1,22 @@
+<div class="btn-group">
+  <a href="/projectadd" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>新增项目</a>   
+</div>
+<table class="table table-hover table-striped">
+  <thead>
+    <tr> 
+      <th>项目名</th> 
+      <th>价格</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% locals.projects.forEach(function(p,index){ %>      
+    <tr> 
+      <td><%= p.name %></td>
+      <td><%= p.price %></td> 
+      <td>
+        <a href="javascript:void(0)" title="删除项目"  onclick="delConfirm('/projectdel/<%= p.id %>','确定要删除该项目吗？');" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>

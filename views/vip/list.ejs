@@ -1,0 +1,40 @@
+<%- partial('vip/tbar') %> 
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      <th>会员名</th>
+      <th>级别</th>
+      <th>余额</th>
+      <th>性别</th>
+      <th>生日</th>
+      <th>电话</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% locals.users.forEach(function(u,index){ %>      
+    <tr>
+      <td><%= u.name %></td>
+      <td><%= u.rankType %></td>
+      <td><%= u.balance %></td>
+      <td><%= u.sex %></td>
+      <td><%= u.birthday %></td>
+      <td><%= u.tel %></td>
+      <td>
+        <a href="javascript:void(0)" title="删除用户"  onclick="delConfirm('/vipdel/<%= u.id %>','确定要删除该会员吗？');" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+        <a href="/vipupdate/<%= u.id %>" title="修改用户" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
+        <a href="javascript:void(0)" onclick="topupVip('/viptopup/<%= u.id %>',this)" title="用户充值" class="btn btn-default"><span class="glyphicon glyphicon-usd"></span></a>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+<ul class="pagination">
+  <li><a href="/user/query?num=1">&laquo;</a></li>
+  <% for(var i = 1 ; i <= locals.pageCount ; i++ ) { 
+      if(locals.num == i) { %>
+        <li class="active"><a href="/user/query?num=<%=i%>"><%= i %></a></li>
+      <% } else{ %>
+        <li><a href="/user/query?num=<%=i%>"><%= i %></a></li> 
+  <% }} %>
+  <li><a href="/user/query?num=<%= locals.pageCount%>">&raquo;</a></li>
+</ul>

@@ -1,0 +1,23 @@
+<%- partial('artist/tbar') %> 
+<table class="table table-hover table-striped">
+  <thead>
+    <tr> 
+      <th>姓名</th> 
+      <th>生日</th>
+      <th>电话</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% locals.artists.forEach(function(u,index){ %>      
+    <tr> 
+      <td><%= u.name %></td>
+      <td><%= u.birthday %></td>
+      <td><%= u.tel %></td>
+      <td>
+      <td>
+        <a href="javascript:void(0)" title="删除"  onclick="delConfirm('/artistdel/<%= u.id %>','确定要删除该美甲师吗？');" class="btn btn-default"><serialspan class="glyphicon glyphicon-minus"></span></a>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
