@@ -14,6 +14,10 @@ var ranks = [{
       type : '钻石卡',
       discount : 0.6,
       discountName : '六折'
+  },{
+      type : 'VVIP卡',
+      discount : 0.5,
+      discountName : '五折'
   }];
 
 exports.ranks = ranks
