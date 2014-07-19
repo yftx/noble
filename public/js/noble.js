@@ -1,3 +1,7 @@
+function searchUser() {
+  alert('搜索用户！');
+}
+
 function delConfirm(url,content){
   var d = dialog({
       title: '提示',
