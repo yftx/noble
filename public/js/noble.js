@@ -1,5 +1,6 @@
-function searchUser() {
-  alert('搜索用户！');
+function searchUser(thiz) {
+  var keyword = $('#user-name')[0].value;
+  window.location.assign("/user/query/?keyword=" + keyword);
 }
 
 function delConfirm(url,content){
