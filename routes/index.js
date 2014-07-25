@@ -268,7 +268,7 @@ module.exports = function(app) {
     app.get('/serial/query', checkLogin);
     app.get('/serial/query', function(req, res) { 
         var num = req.query.num || 1;
-        var limit = req.query.limit || 10;
+        var limit = req.query.limit || 20;
         var obj = {
             search: "",
             page: {
@@ -362,8 +362,6 @@ module.exports = function(app) {
     });
 
     function checkLogin(req, res, next) { 
-        next();
-        return;
         if (!req.session.user) {
             req.flash('error', '未登入');
             return res.redirect('/login');
