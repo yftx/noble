@@ -1,15 +1,17 @@
-<form class="form-horizontal" method="post" width="500px">
+<form class="form-horizontal" method="post" width="500px" role="form">
   <fieldset>
     <legend>新增流水</legend>
+
     <div class="form-group">
       <label for="serial[vip]" class="col-sm-2 control-label">会员</label>
-      <div class="col-sm-10">
+      <div class="col-sm-3">
         <input type="text" id="autocomplete" name="serial[vip]" class="form-control" placeholder="输入关键字搜索会员" />
       </div>
     </div> 
+
     <div class="form-group">
       <label for="serial[project]" class="col-sm-2 control-label">项目</label>
-      <div class="col-sm-10">
+      <div class="col-sm-3">
         <select class="form-control" id="project" name="serial[project]">
           <% locals.projects.forEach(function(proj,index){ %>
           <option value="<%= proj.name %>"><%= proj.name%></option>
@@ -17,9 +19,10 @@
         </select>
       </div>
     </div>   
+
     <div class="form-group">
       <label for="serial[artist]" class="col-sm-2 control-label">美甲师</label>
-      <div class="col-sm-10">
+      <div class="col-sm-3">
         <select class="form-control" name="serial[artist]">
           <% locals.artists.forEach(function(a,index){ %>
           <option value="<%= a.name %>"><%= a.name%></option>
@@ -27,30 +30,38 @@
         </select>
       </div>
     </div>   
+
     <div class="form-group">
       <label for="serial[beforePrice]" class="col-sm-2 control-label">价格</label>
-      <div class="col-sm-10">
-        <input type="text" id="beforePrice" name="serial[beforePrice]" class="form-control" placeholder="价格" />
+      <div class="col-sm-3 input-group">
+        <input type="number" id="beforePrice" name="serial[beforePrice]" class="form-control" placeholder="原价" readonly />
+        <span class="input-group-addon">.00</span>
       </div>
-    </div> 
+    </div>  
+
     <div class="form-group">
       <label for="serial[discount]" class="col-sm-2 control-label">折扣</label>
-      <div class="col-sm-10">
-        <input type="text" id="discount" name="serial[discount]" class="form-control" placeholder="折扣" />
-      </div>
-    </div>   
-    <div class="form-group">
-      <label for="serial[price]" class="col-sm-2 control-label">消费</label>
-      <div class="col-sm-10">
-        <input type="number" id="price" name="serial[price]" class="form-control" placeholder="消费" />
+      <div class="col-sm-3">
+        <input type="text" id="discount" name="serial[discount]" class="form-control" placeholder="折扣" readonly/>
       </div>
     </div>  
+
+    <div class="form-group">
+      <label for="serial[price]" class="col-sm-2 control-label">实际消费</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" id="price" name="serial[price]" class="form-control" placeholder="实际消费" readonly />
+        <span class="input-group-addon">.00</span>
+      </div>
+    </div>  
+
     <div class="form-group">
       <label for="serial[balance]" class="col-sm-2 control-label">余额</label>
-      <div class="col-sm-10">
-        <input type="number" id="balance" name="serial[balance]" class="form-control" placeholder="余额" />
+      <div class="col-sm-3 input-group">
+        <input type="number" id="balance" name="serial[balance]" class="form-control" placeholder="账户余额" readonly />
+        <span class="input-group-addon">.00</span>
       </div>
     </div>  
+
     <div class="form-actions">
       <button type="submit" class="btn btn-primary">添加</button>
       <button type="button" class="btn btn-default" onclick="javascript:history.back(-1)">取消</button>
