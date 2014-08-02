@@ -1,4 +1,4 @@
-<form class="form-horizontal" method="post" width="500px" role="form">
+<form class="form-horizontal" action="/serialadd" id="serial_form" method="post" width="500px" role="form">
   <fieldset>
     <legend>新增流水</legend>
 
@@ -12,7 +12,7 @@
     <div class="form-group">
       <label for="serial[project]" class="col-sm-2 control-label">项目</label>
       <div class="col-sm-3">
-        <select class="form-control" id="project" name="serial[project]">
+        <select class="form-control" id="projectName" name="serial[project]">
           <% locals.projects.forEach(function(proj,index){ %>
           <option value="<%= proj.name %>"><%= proj.name%></option>
           <% }); %>

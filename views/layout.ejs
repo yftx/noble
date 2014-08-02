@@ -14,38 +14,26 @@
     <![endif]-->
   </head>
   <body>
-     <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">贵族美甲</a>
-        </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">首页</a></li>
-          <% if (!user) { %>
-            <li><a href="/login">登录</a></li>
-            <li><a href="/reg">注册</a></li>
-          <% } else { %>
-            <li><a href='javascript:;'>欢迎您,<%= user.name%></a></li>
-            <li><a href="/logout">退出</a></li>
-          <% } %>
-            <li><a href="/user/query">会员管理</a></li>
-            <li><a href="/topup/query">充值记录</a></li>
-            <li><a href="/artist">美甲师管理</a></li>
-            <li><a href="/project">项目管理</a></li>
-            <li><a href="/serial/query">流水管理</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
+    <div class="container">
+      <a class="navbar-brand" href="/">贵族美甲</a>
+      <ul class="nav nav-tabs" role="tablist" id="myTab">
+        <li class="active"><a href="#home" role="tab" data-toggle="tab">首页</a></li>
+      <% if (!user) { %>
+        <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
+        <li><a href="#reg" role="tab" data-toggle="tab">注册</a></li>
+      <% } else { %>
+        <li><a href='javascript:;'>欢迎您,<%= user.name%></a></li>
+        <li><a href="/logout">退出</a></li>
+      <% } %>
+        <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
+        <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
+        <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
+        <li><a href="#project" role="tab" data-toggle="tab">项目管理</a></li>
+        <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li>
+      </ul>
     </div>  
 
     <div id="wrap" class="container">
-
       <% if (success && success.length > 0) { %>
         <div class="alert alert-success">
           <%= success %>
@@ -58,7 +46,31 @@
         </div>
       <% } %>
 
-      <%- body %>
+      <div class="tab-content">
+        <div class="tab-pane active hero-unit" id="home">
+          <h1>欢迎来到 贵族美甲收费系统</h1>
+          <p>贵族美甲收费系统 是一个集会员管理，会员充值，会员消费，美甲项目管理，账户流水管理于一体的多功能收费系统。</p> 
+        </div>
+
+        <div class="tab-pane" id="login">
+          <form class="form-signin" method="post" role="form">
+              <h2 class="form-signin-heading">登录</h2>
+              <input type="text" class="form-control" name="account" placeholder="Email address" required autofocus>
+              <input type="password" class="form-control" name="password" placeholder="Password" required>
+              <label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          </form>
+        </div>
+
+        <div class="tab-pane" id="user_query"></div>
+        <div class="tab-pane" id="topup_query"></div>
+        <div class="tab-pane" id="artist"></div>
+        <div class="tab-pane" id="project"></div>
+        <div class="tab-pane" id="serial_query"></div>
+
+      </div>
       <hr />
       
     </div>

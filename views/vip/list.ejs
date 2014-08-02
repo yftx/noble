@@ -29,12 +29,12 @@
   </tbody>
 </table>
 <ul class="pagination">
-  <li><a href="/user/query?num=1">&laquo;</a></li>
+  <li><a href="javascript:void(0)" onclick="listUser(1)">&laquo;</a></li>
   <% for(var i = 1 ; i <= locals.pageCount ; i++ ) { 
       if(locals.num == i) { %>
-        <li class="active"><a href="/user/query?num=<%=i%>"><%= i %></a></li>
+        <li class="active"><a href="javascript:void(0)" onclick="listUser(<%=i%>)"><%= i %></a></li>
       <% } else{ %>
-        <li><a href="/user/query?num=<%=i%>"><%= i %></a></li> 
+        <li><a href="javascript:void(0)" onclick="listUser(<%=i%>)"><%= i %></a></li> 
   <% }} %>
-  <li><a href="/user/query?num=<%= locals.pageCount%>">&raquo;</a></li>
+  <li><a href="javascript:void(0)" onclick="listUser(<%=locals.pageCount%>)">&raquo;</a></li>
 </ul>

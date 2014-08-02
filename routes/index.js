@@ -12,11 +12,13 @@ module.exports = function(app) {
 			title: '主页'
 		});
 	});
+
     app.get('/login', function(req, res) {
         res.render('login', {
             title: '登录' 
         });
     });
+
     app.post('/login',function(req,res) {
         if (req.body['account'] == null) {
             req.flash('error', '账号不能为空');
@@ -49,7 +51,7 @@ module.exports = function(app) {
     app.get('/user/query', function(req, res) { 
         var keyword = req.query.keyword || "";
         var num = req.query.num||1;
-        var limit = req.query.limit||10;
+        var limit = req.query.limit||5;
         var obj = {
             search: {
                 name: new RegExp(keyword)
@@ -61,6 +63,7 @@ module.exports = function(app) {
         };
         User.findPagination(obj,function(err,pageCount,users){
             res.render('vip/list', {
+                layout: null,
                 title: '会员管理',
                 num: num,
                 pageCount: pageCount,
@@ -71,6 +74,7 @@ module.exports = function(app) {
 
 	app.get('/vipadd', function(req, res) {
 		res.render('vip/add', {
+            layout: null,
 			title: '添加会员',
             ranks : Utils.ranks
 		});
@@ -86,9 +90,9 @@ module.exports = function(app) {
         User.save(user,function(err) {
             if (err) {
                 req.flash('error', '用户名重复！');
-                return res.redirect('/vipadd');
+                return res.send({error: '用户名重复！'});
             }
-            res.redirect('/user/query');
+            res.send({success: true});
         });
     });
 
@@ -194,6 +198,7 @@ module.exports = function(app) {
         }
         Topup.findPagination(obj,function(err,pageCount,topups){
             res.render('vip/topups', {
+                layout: null,
                 title: '充值记录管理',
                 num: num,
                 pageCount: pageCount,
@@ -218,6 +223,7 @@ module.exports = function(app) {
     app.get('/artist', function(req, res) { 
         Artist.getAll(function(err,artists){
             res.render('artist/list', {
+                layout: false,
                 title: '美甲师管理',
                 artists : artists
             }); 
@@ -225,8 +231,9 @@ module.exports = function(app) {
     });
     app.get('/artistadd', function(req, res) {
         res.render('artist/add', {
+                layout: false,
                 title: '添加美甲师'
-            });
+            }); 
     });  
     app.post('/artistadd', function(req, res) {
         if (req.body['name'] == null) {
@@ -278,6 +285,7 @@ module.exports = function(app) {
         };
         Serial.findPagination(obj,function(err,pageCount,serials){
             res.render('serial/list', {
+                layout: false,
                 title: '流水管理',
                 num: num,
                 pageCount: pageCount,
@@ -291,6 +299,7 @@ module.exports = function(app) {
         Project.getAll(function(err,projects){
             Artist.getAll(function(err,artists){
                 res.render('serial/add', {
+                    layout: false,
                     title: '新增流水',
                     projects : projects,
                     artists : artists
@@ -310,20 +319,20 @@ module.exports = function(app) {
         Serial.save(serial,function(err) {
             if (err) {
                 req.flash('error', err);
-                return res.redirect('/serialadd');
+                return res.send({error: err});
             }
             User.getByName(serial.vip,function(err,user){
                 if (err) {
                     req.flash('error', err);
-                    return res.redirect('/serialadd');
+                    return res.send({error: err});
                 }
                 user.balance = user.balance - serial.price;
                 user.save(function(err){
                      if (err) {
                         req.flash('error', err);
-                        return res.redirect('/serialadd');
+                        return res.send({error: err});
                     }
-                    return res.redirect('/serial/query?num=1');
+                    return res.send({success: true});
                 }); 
             });
         });   
@@ -362,10 +371,10 @@ module.exports = function(app) {
     });
 
     function checkLogin(req, res, next) { 
-        if (!req.session.user) {
-            req.flash('error', '未登入');
-            return res.redirect('/login');
-        }
+        // if (!req.session.user) {
+        //     req.flash('error', '未登入');
+        //     return res.redirect('/login');
+        // }
         next(); 
     }
 

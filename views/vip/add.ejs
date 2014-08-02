@@ -1,4 +1,4 @@
-<form class="form-horizontal" method="post" width="500px">
+<form class="form-horizontal" action="/vipadd" method="post" width="500px" id="user_form">
   <fieldset>
     <legend>添加会员</legend>
     <div class="form-group">
@@ -46,3 +46,17 @@
     </div>
   </fieldset>
 </form>
+<script type="text/javascript">
+  $('#user_form').ajaxForm(function(data) {
+    if(!data.error) {
+      listUser(1);
+    } else {
+      var d = dialog({
+          content: data.error,
+          quickClose: true,
+          width: 200
+      });
+      d.show();
+    }
+  });
+ </script>

@@ -1,4 +1,4 @@
-<form class="form-horizontal" method="post" width="500px">
+<form class="form-horizontal" method="post" action="/artistadd" width="500px" id="artist_form">
   <fieldset>
     <legend>添加美甲师</legend>
     <div class="form-group">
@@ -36,3 +36,17 @@
     </div>
   </fieldset>
 </form>
+<script type="text/javascript">
+  $('#artist_form').ajaxForm(function(data) {
+    if(!data.error) {
+      listArtist(1);
+    } else {
+      var d = dialog({
+          content: data.error,
+          quickClose: true,
+          width: 200
+      });
+      d.show();
+    }
+  });
+ </script>

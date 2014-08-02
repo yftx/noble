@@ -1,4 +1,4 @@
-<form class="form-horizontal" method="post" width="500px">
+<form class="form-horizontal" action="/projectadd" id="project_form" method="post" width="500px">
   <fieldset>
     <legend>添加项目</legend>
     <div class="form-group">
@@ -18,3 +18,17 @@
     </div>
   </fieldset>
 </form>
+<script type="text/javascript">
+  $('#project_form').ajaxForm(function(data) {
+    if(!data.error) {
+      listProject(1);
+    } else {
+      var d = dialog({
+          content: data.error,
+          quickClose: true,
+          width: 200
+      });
+      d.show();
+    }
+  });
+ </script>

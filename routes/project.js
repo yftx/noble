@@ -3,6 +3,7 @@ var Project = require('../models/project.js');
 exports.projectList = function(req, res) { 
     Project.getAll(function(err,projects){
         res.render('project/list', {
+            layout: false,
             title: '项目管理',
             projects : projects
         }); 
@@ -11,6 +12,7 @@ exports.projectList = function(req, res) {
 
 exports.projectAdd = function(req, res) {
    res.render('project/add', {
+        layout: false,
         title: '添加项目'
     });
 }
@@ -24,9 +26,9 @@ exports.doProjectAdd = function(req, res) {
     Project.save(req.body.proj,function(err){
 		if (err) {
             req.flash('error', err);
-            return res.redirect('/projectadd');
+            return res.send({error: '项目名称重复！'});
         }
-        res.redirect('/project');
+        res.send({success: true});
     });
 }
 
@@ -36,6 +38,6 @@ exports.projectDel = function(req, res) {
 		if (err) {
             req.flash('error', err);
         }
-        res.redirect('/project');
+        res.send({success: true});
 	});  
 }

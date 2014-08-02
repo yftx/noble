@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-md-4">
-  	<a href="/vipadd" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新建会员</a>
+  	<button onclick="toAddUser()" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新建会员</button>
   </div>
   <form class="col-md-6 form-inline" role="form">
 	  <div class="input-group col-sm-10">
 	    <label class="sr-only" for="user-name">用户名</label>
 		  <input id="user-name" type="text" placeholder="输入用户名，Enter 搜索" class="form-control" name="keyword"> 
       <span class="input-group-btn">
-        <button type="button" class="btn btn-primary" onclick="searchUser(this)">搜索</button>
+        <button type="button" class="btn btn-primary" onclick="searchUser(this)"><span class="glyphicon glyphicon-search"></span></button>
       </span>
 	  </div>
   </form>
