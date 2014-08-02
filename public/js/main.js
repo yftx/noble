@@ -9,12 +9,16 @@ require.config({    // load backbone as a shim
         },
         'bootstrap-paginator': {
         	deps: ['bootstrap']
+        },
+        'highcharts': {
+        	deps: ['jquery']
         }
     }
 });
 
-require(['jquery','dialog/src/dialog','jquery-ui','bootstrap','noble','knockout-3.0.0'],function($,dialog){
+require(['jquery','dialog/src/dialog','jquery-ui','bootstrap','noble','knockout-3.0.0','highcharts'],function($,dialog){
 	window.dialog = dialog;
+	
 	var autoItem = $("#autocomplete" ).autocomplete({
       focus: function( event, ui ) {
         $("#autocomplete").val(ui.item.name);
@@ -41,6 +45,7 @@ require(['jquery','dialog/src/dialog','jquery-ui','bootstrap','noble','knockout-
 		return false;
 	  }
 	}).data( "ui-autocomplete");
+
 	if(autoItem) {
 		autoItem._renderItem = function( ul, item ) {
 	      return $( "<li>" )
@@ -48,6 +53,7 @@ require(['jquery','dialog/src/dialog','jquery-ui','bootstrap','noble','knockout-
 	        .appendTo( ul );
 	    };
 	}
+
 	function loadValue(userName,projectName) { 
 		$.get('/serialcalc',{userName:userName,projectName:projectName}, function(data){
   			$('#rankType').val(data.rankType);
@@ -64,6 +70,7 @@ require(['jquery','dialog/src/dialog','jquery-ui','bootstrap','noble','knockout-
   			}
         });
 	}
+
 	$("#project").change(function(){ 
 		var projectName = $(this).val();//对象值 
 		var userName =  $('#autocomplete').val();
