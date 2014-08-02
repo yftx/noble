@@ -15,6 +15,7 @@ module.exports = function(app) {
 
     app.get('/login', function(req, res) {
         res.render('login', {
+            layout: false,
             title: '登录' 
         });
     });
@@ -22,7 +23,7 @@ module.exports = function(app) {
     app.post('/login',function(req,res) {
         if (req.body['account'] == null) {
             req.flash('error', '账号不能为空');
-            return res.redirect('/login');
+            return res.redirect('/logout');
         } 
 
         if(req.body['account'] == 'laijie' && req.body['password'] == '123456') {
@@ -36,12 +37,12 @@ module.exports = function(app) {
             });
         } else {
             req.flash('error','用户名或密码错误'); 
-            return res.redirect('/login'); 
+            return res.redirect('/logout');
         }
     });
+
     app.get('/logout', function(req, res) {
         req.session.user = null;
-        req.flash('success', '登出成功');
         res.redirect('/');
     });
 

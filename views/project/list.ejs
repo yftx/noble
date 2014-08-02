@@ -14,7 +14,7 @@
       <td><%= p.name %></td>
       <td><%= p.price %></td> 
       <td>
-        <a href="javascript:void(0)" title="删除项目"  onclick="delConfirm('/projectdel/<%= p.id %>','确定要删除该项目吗？');" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+        <a href="javascript:void(0)" title="删除项目"  onclick="delConfirm('/projectdel/<%= p.id %>','确定要删除该项目吗？',listProject);" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
       </td>
     </tr>
     <% }); %>

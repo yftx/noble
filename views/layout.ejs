@@ -20,7 +20,6 @@
         <li class="active"><a href="#home" role="tab" data-toggle="tab">首页</a></li>
       <% if (!user) { %>
         <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
-        <li><a href="#reg" role="tab" data-toggle="tab">注册</a></li>
       <% } else { %>
         <li><a href='javascript:;'>欢迎您,<%= user.name%></a></li>
         <li><a href="/logout">退出</a></li>
@@ -53,7 +52,7 @@
         </div>
 
         <div class="tab-pane" id="login">
-          <form class="form-signin" method="post" role="form">
+          <form class="form-signin" action="/login" id="login_form" method="post" role="form">
               <h2 class="form-signin-heading">登录</h2>
               <input type="text" class="form-control" name="account" placeholder="Email address" required autofocus>
               <input type="password" class="form-control" name="password" placeholder="Password" required>

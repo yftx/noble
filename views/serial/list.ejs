@@ -27,7 +27,7 @@
         <td><%= s.balance %></td>
         <td><%= s.artist %></td>
         <td>
-          <a href="javascript:void(0)" title="删除流水"  onclick="delConfirm('/serialdel/<%= s.id %>','确定要删除这条流水吗？');" class="btn btn-default"><serialspan class="glyphicon glyphicon-minus"></span></a>
+          <a href="javascript:void(0)" title="删除流水"  onclick="delConfirm('/serialdel/<%= s.id %>','确定要删除这条流水吗？',listSerial);" class="btn btn-default"><serialspan class="glyphicon glyphicon-minus"></span></a>
         </td>
       </tr>
       <% }); %>

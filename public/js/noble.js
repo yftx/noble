@@ -1,3 +1,7 @@
+function toIndex() {
+   $('#myTab a[href="#home"]').tab('show')  
+}
+
 function searchUser(thiz) {
     var keyword = $('#user-name')[0].value;
     $.get('/user/query', {
@@ -147,14 +151,14 @@ function toAddSerial() {
     });
 }
 
-function delConfirm(url, content) {
+function delConfirm(url, content,callback) {
     var d = dialog({
         title: '提示',
         content: content || '确定删除这条记录吗？',
         width: 300,
         ok: function() {
             $.get(url, {}, function(data) {
-                window.location.reload();
+                callback(1);
             });
             return true;
         },

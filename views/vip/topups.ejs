@@ -13,7 +13,7 @@
       <td><%= u.date.format('yyyy-MM-dd hh:mm') %></td>
       <td><%= u.money %></td>
       <td>
-        <a href="javascript:void(0)" title="删除"  onclick="delConfirm('/topup/del/<%= u.id %>','确定要删除这条充值记录吗？');" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+        <a href="javascript:void(0)" title="删除"  onclick="delConfirm('/topup/del/<%= u.id %>','确定要删除这条充值记录吗？',listTopup);" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
       </td>
     </tr>
     <% }); %>
