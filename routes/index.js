@@ -5,6 +5,7 @@ var Project = require('../models/project.js');
 var Topup = require('../models/topup.js');
 var Utils = require('../utils/util.js');
 var project = require('../routes/project.js');
+var o3o = require('o3o');
 
 module.exports = function(app) {
     app.get('/', function(req, res) {
@@ -28,7 +29,7 @@ module.exports = function(app) {
 
         if (req.body['account'] == 'laijie' && req.body['password'] == '123456') {
             var user = {
-                name: '赖婕'
+                name: '赖婕 ' + o3o('smile')
             };
             req.session.user = user;
             res.render('index', {

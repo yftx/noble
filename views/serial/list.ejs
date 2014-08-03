@@ -5,7 +5,6 @@
   <table class="table table-hover table-striped">
     <thead>
       <tr>
-        <th>流水号</th>
         <th>会员</th>
         <th>日期</th>
         <th>项目</th>
@@ -18,7 +17,6 @@
     <tbody>
       <% locals.serials.forEach(function(s,index){ %>      
       <tr>
-        <td><%= s.id %></td>
         <td><%= s.vip %></td>
         <td><%= s.date.format('yyyy-MM-dd hh:mm') %></td>
         <td><%= s.project %></td>
@@ -34,15 +32,13 @@
     </tbody>
   </table>
   <ul class="pagination">
-    <li><a href="/serial/query?num=1">&laquo;</a></li>
+    <li><a href="javascript:void(0)" onclick="listSerial(1)">&laquo;</a></li>
     <% for(var i = 1 ; i <= locals.pageCount ; i++ ) { 
         if(locals.num == i) { %>
-          <li class="active"><a href="/serial/query?num=<%=i%>"><%= i %></a></li>
+          <li class="active"><a href="javascript:void(0)" onclick="listSerial(<%= i %>)"><%= i %></a></li>
         <% } else{ %>
-          <li><a href="/serial/query?num=<%=i%>"><%= i %></a></li> 
+          <li><a href="javascript:void(0)" onclick="listSerial(<%= i %>)"><%= i %></a></li> 
     <% }} %>
-    <li><a href="/serial/query?num=<%= locals.pageCount%>">&raquo;</a></li>
+    <li><a href="javascript:void(0)" onclick="listSerial(<%= locals.pageCount%>)">&raquo;</a></li>
   </ul>
 </div>
-
-<script src="/js/serial.js"></script>

@@ -14,23 +14,38 @@
     <![endif]-->
   </head>
   <body>
-    <div class="container">
-      <a class="navbar-brand" href="/">贵族美甲</a>
-      <ul class="nav nav-tabs" role="tablist" id="myTab">
-        <li class="active"><a href="#home" role="tab" data-toggle="tab">首页</a></li>
-      <% if (!user) { %>
-        <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
-      <% } else { %>
-        <li><a href='javascript:;'>欢迎您,<%= user.name%></a></li>
-        <li><a href="/logout">退出</a></li>
-      <% } %>
-        <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
-        <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
-        <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
-        <li><a href="#project" role="tab" data-toggle="tab">项目管理</a></li>
-        <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li>
-      </ul>
-    </div>  
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">贵族美甲</a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav nav-tabs" role="tablist" id="myTab">
+              <li class="active"><a href="#home" role="tab" data-toggle="tab">首页</a></li>
+            <% if (!user) { %>
+              <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
+            <% } else { %>
+              <li><a href='javascript:;'>欢迎您,<%= user.name%></a></li>
+              <li><a href="/logout">退出</a></li>
+            <% } %>
+              <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
+              <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
+              <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
+              <li><a href="#project" role="tab" data-toggle="tab">项目管理</a></li>
+              <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </div>
+    </nav>
 
     <div id="wrap" class="container">
       <% if (success && success.length > 0) { %>
