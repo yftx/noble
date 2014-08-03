@@ -13,19 +13,19 @@
       <td><%= u.date.format('yyyy-MM-dd hh:mm') %></td>
       <td><%= u.money %></td>
       <td>
-        <a href="javascript:void(0)" title="删除"  onclick="delConfirm('/topup/del/<%= u.id %>','确定要删除这条充值记录吗？',listTopup);" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+        <botton title="删除"  onclick="delConfirm('/topup/del/<%= u.id %>','确定要删除这条充值记录吗？',listTopup);" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></botton>
       </td>
     </tr>
     <% }); %>
   </tbody>
 </table>
 <ul class="pagination">
-  <li><a href="/topup/query?num=1">&laquo;</a></li>
+  <li><a href="javascript:void(0)" onclick="listTopup(1)">&laquo;</a></li>
   <% for(var i = 1 ; i <= locals.pageCount ; i++ ) { 
       if(locals.num == i) { %>
-        <li class="active"><a href="/topup/query?num=<%=i%>"><%= i %></a></li>
+        <li class="active"><a href="javascript:void(0)" onclick="listTopup(<%=i%>)"><%= i %></a></li>
       <% } else{ %>
-        <li><a href="/topup/query?num=<%=i%>"><%= i %></a></li> 
+        <li><a href="javascript:void(0)" onclick="listTopup(<%=i%>)"><%= i %></a></li> 
   <% }} %>
-  <li><a href="/topup/query?num=<%= locals.pageCount%>">&raquo;</a></li>
+  <li><a href="javascript:void(0)" onclick="listTopup(<%= locals.pageCount%>)">&raquo;</a></li>
 </ul>

@@ -25,6 +25,28 @@ function toAddUser() {
     });
 }
 
+function toUpdateUser(url) {
+    $.get(url,{},function(data){
+        $('#user_query').html(data);
+        $('#userupdate_form').ajaxForm(function(data) {
+          if(!data.error) {
+            listUser(1);
+          } else {
+            showDialog(data.error);
+          }
+        });
+    });
+}
+
+function showDialog(msg) {
+    var d = dialog({
+        content: msg,
+        quickClose: true,
+        width: 200
+    });
+    d.show();
+}
+
 function listTopup(num) {
     $.get('/topup/query', {
         num: num
@@ -174,21 +196,17 @@ function topupVip(uid) {
         title: '用户充值',
         content: '<input type="number" class="form-control" id="user-topup" placeholder="请输入充值金额" />',
         width: 300,
+        okValue: '确定',
+        cancelValue: '取消',
+        cancel: true,
         ok: function() {
             var value = $('#user-topup').val();
             if (value) {
                 $.post(uid, {
                     value: value
                 }, function(data) {
-                    var d = dialog({
-                        content: '充值成功！',
-                        width: 200
-                    });
-                    d.show();
-                    setTimeout(function() {
-                        d.close().remove();
-                        window.location.reload();
-                    }, 1000);
+                    showDialog('充值成功！');
+                    listUser(1);
                 });
                 return true;
             } else {
@@ -199,10 +217,7 @@ function topupVip(uid) {
                 d.show(document.getElementById('user-topup'));
                 return false;
             }
-        },
-        okValue: '确定',
-        cancelValue: '取消',
-        cancel: true
+        }
     });
     d.show();
 }

@@ -7,36 +7,36 @@ var Utils = require('../utils/util.js');
 var project = require('../routes/project.js');
 
 module.exports = function(app) {
-	app.get('/', function(req, res) {
-		res.render('index', {
-			title: '主页'
-		});
-	});
+    app.get('/', function(req, res) {
+        res.render('index', {
+            title: '主页'
+        });
+    });
 
     app.get('/login', function(req, res) {
         res.render('login', {
             layout: false,
-            title: '登录' 
+            title: '登录'
         });
     });
 
-    app.post('/login',function(req,res) {
+    app.post('/login', function(req, res) {
         if (req.body['account'] == null) {
             req.flash('error', '账号不能为空');
             return res.redirect('/logout');
-        } 
+        }
 
-        if(req.body['account'] == 'laijie' && req.body['password'] == '123456') {
+        if (req.body['account'] == 'laijie' && req.body['password'] == '123456') {
             var user = {
-                name : '赖婕'
-            }; 
+                name: '赖婕'
+            };
             req.session.user = user;
             res.render('index', {
                 title: '主页',
                 user: user
             });
         } else {
-            req.flash('error','用户名或密码错误'); 
+            req.flash('error', '用户名或密码错误');
             return res.redirect('/logout');
         }
     });
@@ -49,10 +49,10 @@ module.exports = function(app) {
     //会员管理
 
     app.get('/user/query', checkLogin);
-    app.get('/user/query', function(req, res) { 
+    app.get('/user/query', function(req, res) {
         var keyword = req.query.keyword || "";
-        var num = req.query.num||1;
-        var limit = req.query.limit||5;
+        var num = req.query.num || 1;
+        var limit = req.query.limit || 5;
         var obj = {
             search: {
                 name: new RegExp(keyword)
@@ -60,51 +60,53 @@ module.exports = function(app) {
             page: {
                 num: num,
                 limit: limit
-            } 
+            }
         };
-        User.findPagination(obj,function(err,pageCount,users){
+        User.findPagination(obj, function(err, pageCount, users) {
             res.render('vip/list', {
-                layout: null,
+                layout: false,
                 title: '会员管理',
                 num: num,
                 pageCount: pageCount,
-                users : users
-            }); 
+                users: users
+            });
         });
     });
 
-	app.get('/vipadd', function(req, res) {
-		res.render('vip/add', {
-            layout: null,
-			title: '添加会员',
-            ranks : Utils.ranks
-		});
-	});
+    app.get('/vipadd', function(req, res) {
+        res.render('vip/add', {
+            layout: false,
+            title: '添加会员',
+            ranks: Utils.ranks
+        });
+    });
 
     app.post('/vipadd', function(req, res) {
         var user = req.body.user;
         if (user['name'] == null) {
-            req.flash('error', '名称不能为空');
-            return res.redirect('/vipadd');
-        } 
+            return res.send({
+                error: '名称不能为空'
+            });
+        }
         user.id = new Date().getTime();
-        User.save(user,function(err) {
-            if (err) {
-                req.flash('error', '用户名重复！');
-                return res.send({error: '用户名重复！'});
-            }
-            res.send({success: true});
+        User.save(user, function(err) {
+            return res.send({
+                error: err
+            });
         });
     });
 
-    app.get('/vipdel/:id', function(req, res) { 
+    app.get('/vipdel/:id', function(req, res) {
         var id = req.params.id;
         if (id == null) {
-            req.flash('error', 'id不能为空');
-            return res.redirect('/vip');
-        } 
+            return res.send({
+                error: 'id不能为空'
+            });
+        }
         User.del(parseInt(id), function(err) {
-            res.redirect('/user/query'); 
+            return res.send({
+                error: err
+            });
         });
     });
 
@@ -113,36 +115,35 @@ module.exports = function(app) {
         if (id == null) {
             req.flash('error', 'id不能为空');
             return res.redirect('/vip');
-        } 
-        User.get(parseInt(id),function(err,user){
+        }
+        User.get(parseInt(id), function(err, user) {
             res.render('vip/edit', {
+                layout: false,
                 title: '修改会员',
-                u : user,
-                ranks : Utils.ranks
+                u: user,
+                ranks: Utils.ranks
             });
         });
     });
 
-    app.post('/vipupdate/:id', function(req, res) {
-        var id = req.params.id;
+    app.post('/vipupdate', function(req, res) {
+        var id = req.body.id;
         if (id == null) {
             req.flash('error', 'id不能为空');
             return res.redirect('/vip');
-        } 
+        }
         var user = {
-            id : parseInt(id),
+            id: parseInt(id),
             name: req.body.name,
-            rankType : req.body.rankType,
-            sex : req.body.sex,
+            rankType: req.body.rankType,
+            sex: req.body.sex,
             birthday: req.body.birthday,
-            tel : req.body.tel
+            tel: req.body.tel
         };
-        User.update(user,function(err) {
-            if (err) {
-                req.flash('error', err);
-                return res.redirect('/user/query');
-            }
-            res.redirect('/user/query');
+        User.update(user, function(err) {
+            return res.send({
+                error: err
+            });
         });
     });
 
@@ -150,11 +151,12 @@ module.exports = function(app) {
         var id = req.params.id;
         var value = req.body.value;
         if (value == null) {
-            req.flash('error', '充值金额不能为空');
-            return res.redirect('/user/query');
-        } 
-        User.get(parseInt(id),function(err,user){
-            if(err) {
+            return res.send({
+                error: '充值金额不能为空'
+            });
+        }
+        User.get(parseInt(id), function(err, user) {
+            if (err) {
                 req.flash('error', err);
                 return res.redirect('/vip');
             }
@@ -167,27 +169,25 @@ module.exports = function(app) {
                     user: user.name,
                     money: money
                 });
-                instance.save(function(err){ 
-                    if (err) {
-                        req.flash('error', err);
-                        return res.redirect('/user/query');
-                    }
-                    res.redirect('/user/query');
+                instance.save(function(err) {
+                    return res.send({
+                        error: err
+                    });
                 });
             });
         });
     });
 
-    app.get('/vipsearch', function(req, res) { 
+    app.get('/vipsearch', function(req, res) {
         var key = req.query.key;
-        User.getByKey(key,function(err,users){
-            res.send(users); 
+        User.getByKey(key, function(err, users) {
+            res.send(users);
         });
     });
 
     //充值记录
     app.get('/topup/query', checkLogin);
-    app.get('/topup/query',function(req,res){
+    app.get('/topup/query', function(req, res) {
         var num = parseInt(req.query.num) || 1;
         var limit = req.query.limit || 10;
         var obj = {
@@ -197,54 +197,56 @@ module.exports = function(app) {
                 limit: limit
             }
         }
-        Topup.findPagination(obj,function(err,pageCount,topups){
+        Topup.findPagination(obj, function(err, pageCount, topups) {
             res.render('vip/topups', {
                 layout: null,
                 title: '充值记录管理',
                 num: num,
                 pageCount: pageCount,
-                topups : topups
-            }); 
+                topups: topups
+            });
         });
     });
 
-    app.get('/topup/del/:id',function(req,res){
+    app.get('/topup/del/:id', function(req, res) {
         var id = req.params.id;
         if (id == null) {
             req.flash('error', 'id不能为空');
             return res.redirect('/vip');
         }
-        Topup.remove({id : parseInt(id)}, function(err, user) {
-            res.redirect('/topup/query'); 
+        Topup.remove({
+            id: parseInt(id)
+        }, function(err, user) {
+            res.redirect('/topup/query');
         });
     });
 
     //美甲师管理
     app.get('/artist', checkLogin);
-    app.get('/artist', function(req, res) { 
-        Artist.getAll(function(err,artists){
+    app.get('/artist', function(req, res) {
+        Artist.getAll(function(err, artists) {
             res.render('artist/list', {
                 layout: false,
                 title: '美甲师管理',
-                artists : artists
-            }); 
+                artists: artists
+            });
         });
     });
     app.get('/artistadd', function(req, res) {
         res.render('artist/add', {
-                layout: false,
-                title: '添加美甲师'
-            }); 
-    });  
+            layout: false,
+            title: '添加美甲师'
+        });
+    });
     app.post('/artistadd', function(req, res) {
         if (req.body['name'] == null) {
             req.flash('error', '名称不能为空');
             return res.redirect('/vipadd');
-        } 
+        }
         var artist = new Artist({
-            id : new Date().getTime(),
+            id: new Date().getTime(),
             name: req.body.name,
-            sex : req.body.sex,
+            sex: req.body.sex,
             birthday: req.body.birthday,
             tel: req.body.tel
         });
@@ -256,14 +258,14 @@ module.exports = function(app) {
             res.redirect('/artist');
         });
     });
-    app.get('/artistdel/:id', function(req, res) { 
+    app.get('/artistdel/:id', function(req, res) {
         var id = req.params.id;
         if (id == null) {
             req.flash('error', 'id不能为空');
             return res.redirect('/artist');
-        } 
+        }
         Artist.del(parseInt(id), function(err, a) {
-            res.redirect('/artist'); 
+            res.redirect('/artist');
         });
     });
     //项目管理
@@ -274,7 +276,7 @@ module.exports = function(app) {
     app.get('/projectdel/:id', project.projectDel);
     //流水管理
     app.get('/serial/query', checkLogin);
-    app.get('/serial/query', function(req, res) { 
+    app.get('/serial/query', function(req, res) {
         var num = req.query.num || 1;
         var limit = req.query.limit || 20;
         var obj = {
@@ -282,81 +284,89 @@ module.exports = function(app) {
             page: {
                 num: num,
                 limit: limit
-            } 
+            }
         };
-        Serial.findPagination(obj,function(err,pageCount,serials){
+        Serial.findPagination(obj, function(err, pageCount, serials) {
             res.render('serial/list', {
                 layout: false,
                 title: '流水管理',
                 num: num,
                 pageCount: pageCount,
-                serials : serials
-            }); 
+                serials: serials
+            });
         });
     });
 
     app.get('/serialadd', checkLogin);
-    app.get('/serialadd', function(req, res) { 
-        Project.getAll(function(err,projects){
-            Artist.getAll(function(err,artists){
+    app.get('/serialadd', function(req, res) {
+        Project.getAll(function(err, projects) {
+            Artist.getAll(function(err, artists) {
                 res.render('serial/add', {
                     layout: false,
                     title: '新增流水',
-                    projects : projects,
-                    artists : artists
+                    projects: projects,
+                    artists: artists
                 });
-            }); 
-        }); 
+            });
+        });
     });
 
-    app.post('/serialadd', function(req, res) { 
+    app.post('/serialadd', function(req, res) {
         var serial = req.body.serial;
         if (serial['vip'] == null) {
             req.flash('error', '会员不能为空');
             return res.redirect('/serial');
-        } 
+        }
         serial.id = new Date().getTime();
         serial.date = new Date();
-        Serial.save(serial,function(err) {
+        Serial.save(serial, function(err) {
             if (err) {
                 req.flash('error', err);
-                return res.send({error: err});
+                return res.send({
+                    error: err
+                });
             }
-            User.getByName(serial.vip,function(err,user){
+            User.getByName(serial.vip, function(err, user) {
                 if (err) {
                     req.flash('error', err);
-                    return res.send({error: err});
+                    return res.send({
+                        error: err
+                    });
                 }
                 user.balance = user.balance - serial.price;
-                user.save(function(err){
-                     if (err) {
+                user.save(function(err) {
+                    if (err) {
                         req.flash('error', err);
-                        return res.send({error: err});
+                        return res.send({
+                            error: err
+                        });
                     }
-                    return res.send({success: true});
-                }); 
+                    return res.send({
+                        success: true
+                    });
+                });
             });
-        });   
+        });
     });
 
-    app.get('/serialdel/:id', function(req, res) { 
+    app.get('/serialdel/:id', function(req, res) {
         var id = req.params.id;
         if (id == null) {
             req.flash('error', 'id不能为空');
             return res.redirect('/vip');
         }
         Serial.del(parseInt(id), function(err, user) {
-            res.redirect('/serial/query'); 
+            res.redirect('/serial/query');
         });
     });
 
-    app.get('/serialcalc', function(req, res) { 
+    app.get('/serialcalc', function(req, res) {
         var userName = req.query.userName;
         var projectName = req.query.projectName;
-        User.getByName(userName,function(err,user){
+        User.getByName(userName, function(err, user) {
             var rankType = user.rankType;
             var rank = Utils.getRank(rankType);
-            Project.getByName(projectName,function(err,project){
+            Project.getByName(projectName, function(err, project) {
                 var price = Math.round(rank.discount * project.price);
                 var balance = user.balance - price;
                 var result = {
@@ -366,17 +376,17 @@ module.exports = function(app) {
                     price: price,
                     balance: balance
                 };
-                res.send(result);   
-            }); 
+                res.send(result);
+            });
         });
     });
 
-    function checkLogin(req, res, next) { 
+    function checkLogin(req, res, next) {
         // if (!req.session.user) {
         //     req.flash('error', '未登入');
         //     return res.redirect('/login');
         // }
-        next(); 
+        next();
     }
 
 };
