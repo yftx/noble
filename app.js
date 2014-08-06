@@ -41,8 +41,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.listen(3000);
-console.log('noble service listening on port 3000'); 
+app.listen(3001);
+console.log('noble service listening on port 3001'); 
 
 Date.prototype.format = function (fmt) { //author: meizz 
   var o = {
