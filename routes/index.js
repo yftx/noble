@@ -32,10 +32,7 @@ module.exports = function(app) {
                 name: '赖婕 ' + o3o('smile')
             };
             req.session.user = user;
-            res.render('index', {
-                title: '主页',
-                user: user
-            });
+            return res.redirect('/');
         } else {
             req.flash('error', '用户名或密码错误');
             return res.redirect('/logout');
@@ -53,7 +50,7 @@ module.exports = function(app) {
     app.get('/user/query', function(req, res) {
         var keyword = req.query.keyword || "";
         var num = req.query.num || 1;
-        var limit = req.query.limit || 5;
+        var limit = req.query.limit || 10;
         var obj = {
             search: {
                 name: new RegExp(keyword)
@@ -383,10 +380,10 @@ module.exports = function(app) {
     });
 
     function checkLogin(req, res, next) {
-        // if (!req.session.user) {
-        //     req.flash('error', '未登入');
-        //     return res.redirect('/login');
-        // }
+        if (!req.session.user) {
+            req.flash('error', '未登入');
+            return res.redirect('/login');
+        }
         next();
     }
 

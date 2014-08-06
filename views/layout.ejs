@@ -6,6 +6,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"> 
     <link href="/css/jquery-ui.css" rel="stylesheet" media="screen"> 
     <link href="/css/starter-template.css" rel="stylesheet"> 
+    <link href="/css/justified-nav.css" rel="stylesheet" media="screen"> 
     <script data-main="/js/main" src="/js/require.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -24,23 +25,22 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">贵族美甲</a>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav nav-tabs" role="tablist" id="myTab">
-              <li class="active"><a href="#home" role="tab" data-toggle="tab">首页</a></li>
-            <% if (!user) { %>
-              <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
-            <% } else { %>
-              <li><a href='javascript:;'>欢迎您,<%= user.name%></a></li>
-              <li><a href="/logout">退出</a></li>
-            <% } %>
+            <ul class="nav nav-justified" role="tablist" id="myTab">
+              <li class="active"><a href="/">贵族美甲</a></li>
               <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
               <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
               <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
               <li><a href="#project" role="tab" data-toggle="tab">项目管理</a></li>
               <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li>
+            <% if (!user) { %>
+              <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
+            <% } else { %>
+              <li><a href='javascript:;'><%= user.name%></a></li>
+              <li><a href="/logout">退出</a></li>
+            <% } %>
             </ul>
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
