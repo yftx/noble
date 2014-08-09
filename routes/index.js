@@ -275,10 +275,13 @@ module.exports = function(app) {
     //流水管理
     app.get('/serial/query', checkLogin);
     app.get('/serial/query', function(req, res) {
+        var keyword = req.query.keyword || "";
         var num = req.query.num || 1;
         var limit = req.query.limit || 20;
         var obj = {
-            search: "",
+            search: {
+                vip: new RegExp(keyword)
+            },
             page: {
                 num: num,
                 limit: limit

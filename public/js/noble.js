@@ -1,16 +1,7 @@
 function toIndex() {
    $('#myTab a[href="#home"]').tab('show')  
 }
-
-function searchUser(thiz) {
-    var keyword = $('#user-name')[0].value;
-    $.get('/user/query', {
-        keyword: keyword
-    }, function(data) {
-        $('#user_query').html(data);
-    });
-}
-
+ 
 function listUser(num) {
     $.get('/user/query', {
         num: num
