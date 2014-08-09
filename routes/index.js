@@ -186,10 +186,13 @@ module.exports = function(app) {
     //充值记录
     app.get('/topup/query', checkLogin);
     app.get('/topup/query', function(req, res) {
+        var keyword = req.query.keyword || "";
         var num = parseInt(req.query.num) || 1;
         var limit = req.query.limit || 10;
         var obj = {
-            search: '',
+            search: {
+                user: new RegExp(keyword)
+            },
             page: {
                 num: num,
                 limit: limit

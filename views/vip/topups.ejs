@@ -1,3 +1,14 @@
+<div class="row">
+  <form class="col-md-6 col-md-offset-6 form-inline" action="/topup/query" id="topup_query_form" role="form">
+    <div class="input-group col-sm-10">
+      <label class="sr-only" for="user-name">用户名</label>
+      <input id="user-name" type="text" placeholder="搜索特定用户的充值记录" class="form-control" name="keyword"> 
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-primary""><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+    </div>
+  </form>
+</div>
 <table class="table table-hover table-striped">
   <thead>
     <tr>
@@ -29,3 +40,8 @@
   <% }} %>
   <li><a href="javascript:void(0)" onclick="listTopup(<%= locals.pageCount%>)">&raquo;</a></li>
 </ul>
+<script>
+$('#topup_query_form').ajaxForm(function(data) {
+  $('#topup_query').html(data);
+});
+</script>
