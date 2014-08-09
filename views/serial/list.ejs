@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-xs-3 col-md-4">
-    <button onclick="toAddSerial()" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>新增流水</button>
+    <button onclick="toAddSerial()" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新增流水</button>
   </div>
   <form class="col-xs-7 col-xs-offset-2 col-md-6 col-md-offset-2 form-inline" action="/serial/query" id="serial_query_form" role="form">
-    <div class="input-group col-sm-10">
+    <div class="input-group">
       <label class="sr-only" for="user-name">用户名</label>
       <input id="user-name" type="text" placeholder="搜索特定用户的流水，支持模糊查询" class="form-control" name="keyword"> 
       <span class="input-group-btn">
@@ -12,47 +12,45 @@
     </div>
   </form>
 </div>
-<div class="span12">
-  <table class="table table-hover table-striped">
-    <thead>
-      <tr>
-        <th>会员</th>
-        <th>日期</th>
-        <th>项目</th>
-        <th>折扣</th>
-        <th>消费</th>
-        <th>余额</th>
-        <th>美甲师</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% locals.serials.forEach(function(s,index){ %>      
-      <tr>
-        <td><%= s.vip %></td>
-        <td><%= s.date.format('yyyy-MM-dd hh:mm') %></td>
-        <td><%= s.project %></td>
-        <td><%= s.discount %></td>
-        <td><%= s.price %></td>
-        <td><%= s.balance %></td>
-        <td><%= s.artist %></td>
-        <td>
-          <a href="javascript:void(0)" title="删除流水"  onclick="delConfirm('/serialdel/<%= s.id %>','确定要删除这条流水吗？',listSerial);" class="btn btn-default"><serialspan class="glyphicon glyphicon-minus"></span></a>
-        </td>
-      </tr>
-      <% }); %>
-    </tbody>
-  </table>
-  <ul class="pagination">
-    <li><a href="javascript:void(0)" onclick="listSerial(1)">&laquo;</a></li>
-    <% for(var i = 1 ; i <= locals.pageCount ; i++ ) { 
-        if(locals.num == i) { %>
-          <li class="active"><a href="javascript:void(0)" onclick="listSerial(<%= i %>)"><%= i %></a></li>
-        <% } else{ %>
-          <li><a href="javascript:void(0)" onclick="listSerial(<%= i %>)"><%= i %></a></li> 
-    <% }} %>
-    <li><a href="javascript:void(0)" onclick="listSerial(<%= locals.pageCount%>)">&raquo;</a></li>
-  </ul>
-</div>
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      <th>会员</th>
+      <th>日期</th>
+      <th>项目</th>
+      <th>折扣</th>
+      <th>消费</th>
+      <th>余额</th>
+      <th>美甲师</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% locals.serials.forEach(function(s,index){ %>      
+    <tr>
+      <td><%= s.vip %></td>
+      <td><%= s.date.format('yyyy-MM-dd hh:mm') %></td>
+      <td><%= s.project %></td>
+      <td><%= s.discount %></td>
+      <td><%= s.price %></td>
+      <td><%= s.balance %></td>
+      <td><%= s.artist %></td>
+      <td>
+        <a href="javascript:void(0)" title="删除流水"  onclick="delConfirm('/serialdel/<%= s.id %>','确定要删除这条流水吗？',listSerial);" class="btn btn-default"><serialspan class="glyphicon glyphicon-minus"></span></a>
+      </td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+<ul class="pagination">
+  <li><a href="javascript:void(0)" onclick="listSerial(1)">&laquo;</a></li>
+  <% for(var i = 1 ; i <= locals.pageCount ; i++ ) { 
+      if(locals.num == i) { %>
+        <li class="active"><a href="javascript:void(0)" onclick="listSerial(<%= i %>)"><%= i %></a></li>
+      <% } else{ %>
+        <li><a href="javascript:void(0)" onclick="listSerial(<%= i %>)"><%= i %></a></li> 
+  <% }} %>
+  <li><a href="javascript:void(0)" onclick="listSerial(<%= locals.pageCount%>)">&raquo;</a></li>
+</ul>
 <script>
 $('#serial_query_form').ajaxForm(function(data) {
   $('#serial_query').html(data);
