@@ -18,7 +18,7 @@
     <nav class="navbar navbar-default" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -26,20 +26,16 @@
           </button>
         </div>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
           <ul class="nav nav-justified" role="tablist" id="myTab">
-            <li class="active"><a href="/">贵族美甲</a></li>
+            <li class="active"><a href="#home" role="tab" data-toggle="tab">贵族美甲</a></li>
             <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
             <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
             <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
-            <li><a href="#project" role="tab" data-toggle="tab">项目管理</a></li>
-            <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li>
-          <% if (!user) { %>
-            <li><a href="#login" role="tab" data-toggle="tab">登录</a></li>
-          <% } else { %>
-            <li><a href='javascript:;'><%= user.name%></a></li>
-            <li><a href="/logout">退出</a></li>
-          <% } %>
+            <li><a href="#project" role="tab" data-bind="click: listProject">项目管理</a></li>
+            <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li> 
+            <li><a href="#" data-bind="text: name"></a></li>
+            <li data-bind="visible: isLogin() "><a href="/logout">退出</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div>
@@ -59,12 +55,9 @@
       <% } %>
 
       <div class="tab-content">
-        <div class="tab-pane active hero-unit" id="home">
+        <div class="tab-pane fade in active hero-unit" id="home">
           <h1>欢迎来到 贵族美甲收费系统</h1>
           <p>贵族美甲收费系统 是一个集会员管理，会员充值，会员消费，美甲项目管理，账户流水管理于一体的多功能收费系统。</p> 
-        </div>
-
-        <div class="tab-pane" id="login">
           <form class="form-signin" action="/login" id="login_form" method="post" role="form">
               <h2 class="form-signin-heading">登录</h2>
               <input type="text" class="form-control" name="account" placeholder="Email address" required autofocus>
@@ -74,13 +67,63 @@
               </label>
               <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
           </form>
+        </div> 
+
+        <div class="tab-pane fade" id="user_query">
+          
+        </div>
+        <div class="tab-pane fade" id="topup_query"></div>
+        <div class="tab-pane fade" id="artist"></div>
+
+        <!-- 项目列表 -->
+        <div class="tab-pane fade" id="project">
+          <div class="btn-group">
+            <a href="#project_add" data-toggle="tab" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>新增项目</a>
+          </div>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr> 
+                <th>项目名</th> 
+                <th>价格</th>
+              </tr>
+            </thead>
+            <tbody data-bind="foreach: projects">    
+              <tr> 
+                <td data-bind="text: name"></td>
+                <td data-bind="text: price"></td> 
+                <td>
+                  <a href="javascript:void(0)" title="删除项目"  onclick="delConfirm('/projectdel/','确定要删除该项目吗？',listProject);" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
-        <div class="tab-pane" id="user_query"></div>
-        <div class="tab-pane" id="topup_query"></div>
-        <div class="tab-pane" id="artist"></div>
-        <div class="tab-pane" id="project"></div>
-        <div class="tab-pane" id="serial_query"></div>
+        <!-- 添加项目 -->
+        <div class="tab-pane fade" id="project_add">
+          <form class="form-horizontal" action="/projectadd" id="project_form" method="post" width="500px">
+            <fieldset>
+              <legend>添加项目</legend>
+              <div class="form-group">
+                <label for="proj[name]" class="col-sm-2 control-label">项目名</label>
+                <div class="col-sm-10">
+                  <input type="text" name="proj[name]" class="form-control" placeholder="输入项目名" required />
+                </div>
+              </div> 
+              <div class="form-group">
+                <label for="proj[price]" class="col-sm-2 control-label">价格</label>
+                <div class="col-sm-10">
+                  <input type="number" name="proj[price]" class="form-control" placeholder="输入价格" required />
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">添加</button>
+                <a class="btn btn-default" href="#project" data-toggle="tab">取消</a>
+              </div>
+            </fieldset> 
+          </form>
+        </div>
+        <div class="tab-pane fade" id="serial_query"></div>
 
       </div>
       <hr />

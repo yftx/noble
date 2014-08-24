@@ -6,6 +6,7 @@ var Topup = require('../models/topup.js');
 var Utils = require('../utils/util.js');
 var project = require('../routes/project.js');
 var o3o = require('o3o');
+var async = require('async');
 
 module.exports = function(app) {
     app.get('/', function(req, res) {
@@ -32,7 +33,7 @@ module.exports = function(app) {
                 name: '赖婕 ' + o3o('smile')
             };
             req.session.user = user;
-            return res.redirect('/');
+            return res.send(user);
         } else {
             req.flash('error', '用户名或密码错误');
             return res.redirect('/logout');
@@ -225,7 +226,7 @@ module.exports = function(app) {
     //美甲师管理
     app.get('/artist', checkLogin);
     app.get('/artist', function(req, res) {
-        Artist.getAll(function(err, artists) {
+        Artist.find(function(err, artists) {
             res.render('artist/list', {
                 layout: false,
                 title: '美甲师管理',
@@ -303,14 +304,24 @@ module.exports = function(app) {
 
     app.get('/serialadd', checkLogin);
     app.get('/serialadd', function(req, res) {
-        Project.getAll(function(err, projects) {
-            Artist.getAll(function(err, artists) {
-                res.render('serial/add', {
-                    layout: false,
-                    title: '新增流水',
-                    projects: projects,
-                    artists: artists
+        async.parallel([
+
+            function(callback) {
+                Project.getAll(function(err, projects) {
+                    callback(err, projects);
                 });
+            },
+            function(callback) {
+                Artist.getAll(function(err, artists) {
+                    callback(err, artists);
+                });
+            }
+        ], function(err, result) {
+            res.render('serial/add', {
+                layout: false,
+                title: '新增流水',
+                projects: result[0],
+                artists: result[1]
             });
         });
     });

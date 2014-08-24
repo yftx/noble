@@ -60,18 +60,31 @@ function toAddArtist() {
     });
 }
 
-function listProject(num) {
-    $.get('/project', {
-        num: num
-    }, function(data) {
-        $('#project').html(data);
-    });
-}
+function OverallViewModel() {
+    var self = this;
+    
+    self.name = ko.observable("未登录");
 
-function toAddProject() {
-    $.get('/projectadd', {}, function(data) {
-        $('#project').html(data);
-    });
+    self.projects = ko.observableArray([]);
+
+    self.isLogin = ko.computed(function() {
+        return this.name() !== "未登录";
+    },self);
+
+    self.addProject = function(pro) {
+        self.projects.push(pro);
+    }
+
+    self.listProject = function() {
+        $('#myTab a[href="#project"]').tab('show');
+        $.get('/project', {}, function(data) {
+            self.projects(data);
+        });
+    }
+
+    self.toIndex = function() {
+        $('#project').show();
+    }
 }
 
 function listSerial(num) {
@@ -80,6 +93,20 @@ function listSerial(num) {
     }, function(data) {
         $('#serial_query').html(data);
     });
+}
+
+function Serial() {
+    this.discount = ko.observable();
+    this.beforePrice = ko.observable();
+    this.price = ko.observable();
+    this.balance = ko.observable();
+
+    this.setValues = function(data){
+        this.discount(data.discountName);
+        this.beforePrice(data.beforePrice);
+        this.price(data.price);
+        this.balance(data.balance);
+    }
 }
 
 function toAddSerial() {
@@ -97,6 +124,9 @@ function toAddSerial() {
             d.show();
           }
         });
+        var serial = new Serial();
+        ko.applyBindings(serial,$('#serial_form').get(0));
+
         var autoItem = $("#autocomplete").autocomplete({
             focus: function(event, ui) {
                 $("#autocomplete").val(ui.item.name);
@@ -126,24 +156,18 @@ function toAddSerial() {
             }
         }).data("ui-autocomplete");
 
-        if (autoItem) {
-            autoItem._renderItem = function(ul, item) {
-                return $("<li>")
-                    .append("<a>" + item.name + "<br />" + item.rankType + "-余额（" + item.balance + "）</a>")
-                    .appendTo(ul);
-            };
-        }
+        autoItem. _renderItem = function(ul, item) {
+            return $("<li>")
+                .append("<a>" + item.name + "<br />" + item.rankType + "-余额（" + item.balance + "）</a>")
+                .appendTo(ul);
+        };
 
         function loadValue(userName, projectName) {
             $.get('/serialcalc', {
                 userName: userName,
                 projectName: projectName
             }, function(data) {
-                $('#rankType').val(data.rankType);
-                $('#discount').val(data.discountName);
-                $('#beforePrice').val(data.beforePrice);
-                $('#price').val(data.price);
-                $('#balance').val(data.balance);
+                serial.setValues(data);
                 if (data.balance < 0) {
                     var d = dialog({
                         content: '余额不足，请充值！',

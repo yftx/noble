@@ -34,7 +34,7 @@
     <div class="form-group">
       <label for="serial[beforePrice]" class="col-sm-2 control-label">价格</label>
       <div class="col-sm-5 input-group">
-        <input type="number" id="beforePrice" name="serial[beforePrice]" class="form-control" placeholder="原价" readonly />
+        <input type="number" id="beforePrice" name="serial[beforePrice]" data-bind="value: beforePrice" class="form-control" placeholder="原价" readonly />
         <span class="input-group-addon">.00</span>
       </div>
     </div>  
@@ -42,14 +42,14 @@
     <div class="form-group">
       <label for="serial[discount]" class="col-sm-2 control-label">折扣</label>
       <div class="col-sm-5">
-        <input type="text" id="discount" name="serial[discount]" class="form-control" placeholder="折扣" readonly/>
+        <input type="text" id="discount" name="serial[discount]" data-bind="value: discount" class="form-control" placeholder="折扣" readonly/>
       </div>
     </div>  
 
     <div class="form-group">
       <label for="serial[price]" class="col-sm-2 control-label">实际消费</label>
       <div class="col-sm-5 input-group">
-        <input type="number" id="price" name="serial[price]" class="form-control" placeholder="实际消费" />
+        <input type="number" id="price" name="serial[price]" data-bind="value: price" class="form-control" placeholder="实际消费" />
         <span class="input-group-addon">.00</span>
       </div>
     </div>  
@@ -57,7 +57,7 @@
     <div class="form-group">
       <label for="serial[balance]" class="col-sm-2 control-label">余额</label>
       <div class="col-sm-5 input-group">
-        <input type="number" id="balance" name="serial[balance]" class="form-control" placeholder="账户余额" />
+        <input type="number" id="balance" name="serial[balance]" data-bind="value: balance" class="form-control" placeholder="账户余额" />
         <span class="input-group-addon">.00</span>
       </div>
     </div>  

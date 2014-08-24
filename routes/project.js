@@ -2,11 +2,7 @@ var Project = require('../models/project.js');
 
 exports.projectList = function(req, res) { 
     Project.getAll(function(err,projects){
-        res.render('project/list', {
-            layout: false,
-            title: '项目管理',
-            projects : projects
-        }); 
+        res.send(projects);
     });
 }
 
