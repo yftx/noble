@@ -8,7 +8,8 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     flash = require('connect-flash'),
-    connect = require('connect');
+    connect = require('connect'),
+    morgan  = require('morgan');
 
 var app = express();
 
@@ -18,7 +19,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.use(flash()).use(partials()).use(connect.favicon());
-app.use(connect.logger());
+app.use(morgan('dev'));
 app.use(connect.urlencoded());
 app.use(connect.json());
 app.use(connect.cookieParser());

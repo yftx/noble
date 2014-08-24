@@ -19,12 +19,11 @@ exports.doProjectAdd = function(req, res) {
         return res.redirect('/vipadd');
     } 
     req.body.proj.id = new Date().getTime();
-    Project.save(req.body.proj,function(err){
+    Project.save(req.body.proj,function(err,pro){
 		if (err) {
-            req.flash('error', err);
             return res.send({error: '项目名称重复！'});
         }
-        res.send({success: true});
+        res.send(pro);
     });
 }
 
@@ -32,7 +31,7 @@ exports.projectDel = function(req, res) {
 	var id = req.params.id
 	Project.del(id,function(err){
 		if (err) {
-            req.flash('error', err);
+            return req.send({error: err});
         }
         res.send({success: true});
 	});  

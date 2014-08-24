@@ -51,7 +51,8 @@ require(['jquery', 'dialog/src/dialog', 'jquery-ui', 'bootstrap', 'noble', 'knoc
 
     $('#project_form').ajaxForm(function(data) {
         if(!data.error) {
-          $('#myTab a[href="#project"]').tab('show')
+            $('#cacelAddProject').tab('show');
+           overallViewModel.addProject(data);
         } else {
           var d = dialog({
               content: data.error,

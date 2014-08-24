@@ -1,7 +1,7 @@
 function toIndex() {
-   $('#myTab a[href="#home"]').tab('show')  
+    $('#myTab a[href="#home"]').tab('show')
 }
- 
+
 function listUser(num) {
     $.get('/user/query', {
         num: num
@@ -17,14 +17,14 @@ function toAddUser() {
 }
 
 function toUpdateUser(url) {
-    $.get(url,{},function(data){
+    $.get(url, {}, function(data) {
         $('#user_query').html(data);
         $('#userupdate_form').ajaxForm(function(data) {
-          if(!data.error) {
-            listUser(1);
-          } else {
-            showDialog(data.error);
-          }
+            if (!data.error) {
+                listUser(1);
+            } else {
+                showDialog(data.error);
+            }
         });
     });
 }
@@ -62,21 +62,42 @@ function toAddArtist() {
 
 function OverallViewModel() {
     var self = this;
-    
+
     self.name = ko.observable("未登录");
 
     self.projects = ko.observableArray([]);
 
     self.isLogin = ko.computed(function() {
         return this.name() !== "未登录";
-    },self);
+    }, self);
 
     self.addProject = function(pro) {
         self.projects.push(pro);
     }
 
+    self.removeProject = function() {
+        var pro = this;
+        var d = dialog({
+            title: '提示',
+            content: '确定删除这个项目吗？',
+            width: 300,
+            ok: function() {
+                $.get('/projectdel/' + pro.id, {}, function(data) {
+                    if(data.error) {
+                        showDialog(data.error);
+                        return;
+                    }
+                    self.projects.remove(pro);
+                 });
+            },
+            okValue: '确定',
+            cancelValue: '取消',
+            cancel: true
+        });
+        d.show();
+    }
+
     self.listProject = function() {
-        $('#myTab a[href="#project"]').tab('show');
         $.get('/project', {}, function(data) {
             self.projects(data);
         });
@@ -101,7 +122,7 @@ function Serial() {
     this.price = ko.observable();
     this.balance = ko.observable();
 
-    this.setValues = function(data){
+    this.setValues = function(data) {
         this.discount(data.discountName);
         this.beforePrice(data.beforePrice);
         this.price(data.price);
@@ -113,19 +134,19 @@ function toAddSerial() {
     $.get('/serialadd', {}, function(data) {
         $('#serial_query').html(data);
         $('#serial_form').ajaxForm(function(data) {
-          if(!data.error) {
-            listSerial(1);
-          } else {
-            var d = dialog({
-                content: data.error,
-                quickClose: true,
-                width: 200
-            });
-            d.show();
-          }
+            if (!data.error) {
+                listSerial(1);
+            } else {
+                var d = dialog({
+                    content: data.error,
+                    quickClose: true,
+                    width: 200
+                });
+                d.show();
+            }
         });
         var serial = new Serial();
-        ko.applyBindings(serial,$('#serial_form').get(0));
+        ko.applyBindings(serial, $('#serial_form').get(0));
 
         var autoItem = $("#autocomplete").autocomplete({
             focus: function(event, ui) {
@@ -156,7 +177,7 @@ function toAddSerial() {
             }
         }).data("ui-autocomplete");
 
-        autoItem. _renderItem = function(ul, item) {
+        autoItem._renderItem = function(ul, item) {
             return $("<li>")
                 .append("<a>" + item.name + "<br />" + item.rankType + "-余额（" + item.balance + "）</a>")
                 .appendTo(ul);
@@ -188,7 +209,7 @@ function toAddSerial() {
     });
 }
 
-function delConfirm(url, content,callback) {
+function delConfirm(url, content, callback) {
     var d = dialog({
         title: '提示',
         content: content || '确定删除这条记录吗？',

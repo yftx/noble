@@ -13,6 +13,7 @@
     "mongoose":"3.8.15",
     "connect-flash": "*",
     "o3o": "*",
-    "async": "*"
+    "async": "*",
+    "morgan": "*"
   }
 }

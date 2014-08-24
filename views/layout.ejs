@@ -32,7 +32,7 @@
             <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
             <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
             <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
-            <li><a href="#project" role="tab" data-bind="click: listProject">项目管理</a></li>
+            <li><a href="#project" role="tab" data-toggle="tab" data-bind="click: listProject">项目管理</a></li>
             <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li> 
             <li><a href="#" data-bind="text: name"></a></li>
             <li data-bind="visible: isLogin() "><a href="/logout">退出</a></li>
@@ -92,7 +92,7 @@
                 <td data-bind="text: name"></td>
                 <td data-bind="text: price"></td> 
                 <td>
-                  <a href="javascript:void(0)" title="删除项目"  onclick="delConfirm('/projectdel/','确定要删除该项目吗？',listProject);" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
+                  <a href="#" title="删除项目" data-bind="click: $parent.removeProject" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></a>
                 </td>
               </tr>
             </tbody>
@@ -118,7 +118,7 @@
               </div>
               <div class="form-actions">
                 <button type="submit" class="btn btn-primary">添加</button>
-                <a class="btn btn-default" href="#project" data-toggle="tab">取消</a>
+                <a id="cacelAddProject" class="btn btn-default" href="#project" data-toggle="tab">取消</a>
               </div>
             </fieldset> 
           </form>
