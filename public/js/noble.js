@@ -46,14 +46,6 @@ function listTopup(num) {
     });
 }
 
-function listArtist(num) {
-    $.get('/artist', {
-        num: num
-    }, function(data) {
-        $('#artist').html(data);
-    });
-}
-
 function toAddArtist() {
     $.get('/artistadd', {}, function(data) {
         $('#artist').html(data);
@@ -67,9 +59,42 @@ function OverallViewModel() {
 
     self.projects = ko.observableArray([]);
 
+    self.artists = ko.observableArray([]);
+
     self.isLogin = ko.computed(function() {
         return this.name() !== "未登录";
     }, self);
+
+    self.addArtist = function(art) {
+        self.artists.push(art);
+    }
+
+    self.removeArtist = function() {
+        var art = this;
+        dialog({
+            title: '提示',
+            content: '确认删除这个美甲师吗？',
+            width: 300,
+            ok: function() {
+                $.get('/artistdel/' + art.id, {}, function(data) {
+                    if (data.error) {
+                        showDialog(data.error);
+                        return;
+                    }
+                    self.artists.remove(art);
+                });
+            },
+            okValue: '确定',
+            cancelValue: '取消',
+            cancel: true
+        }).show();
+    }
+
+    self.listArtist = function() {
+        $.get('/artist', {}, function(data) {
+            self.artists(data);
+        });
+    }
 
     self.addProject = function(pro) {
         self.projects.push(pro);
@@ -83,12 +108,12 @@ function OverallViewModel() {
             width: 300,
             ok: function() {
                 $.get('/projectdel/' + pro.id, {}, function(data) {
-                    if(data.error) {
+                    if (data.error) {
                         showDialog(data.error);
                         return;
                     }
                     self.projects.remove(pro);
-                 });
+                });
             },
             okValue: '确定',
             cancelValue: '取消',

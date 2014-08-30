@@ -31,7 +31,7 @@
             <li class="active"><a href="#home" role="tab" data-toggle="tab">贵族美甲</a></li>
             <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
             <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
-            <li><a href="#artist" role="tab" data-toggle="tab">美甲师管理</a></li>
+            <li><a href="#artist" role="tab" data-toggle="tab" data-bind="click: listArtist">美甲师管理</a></li>
             <li><a href="#project" role="tab" data-toggle="tab" data-bind="click: listProject">项目管理</a></li>
             <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li> 
             <li><a href="#" data-bind="text: name"></a></li>
@@ -69,11 +69,73 @@
           </form>
         </div> 
 
-        <div class="tab-pane fade" id="user_query">
-          
-        </div>
+        <div class="tab-pane fade" id="user_query"></div>
         <div class="tab-pane fade" id="topup_query"></div>
-        <div class="tab-pane fade" id="artist"></div>
+
+        <div class="tab-pane fade" id="artist">
+          <div class="btn-group">
+            <a href="#artist_add" data-toggle="tab" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>新增美甲师</a>
+          </div>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr> 
+                <th>姓名</th>
+                <th>电话</th>
+              </tr>
+            </thead>
+            <tbody data-bind="foreach: artists"> 
+              <tr> 
+                <td data-bind="text:name"></td>
+                <td data-bind="text:tel"></td>
+                <td>
+                  <a href="#" title="删除"  data-bind="click: $parent.removeArtist" class="btn btn-default"><serialspan class="glyphicon glyphicon-minus"></span></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 美甲师列表 -->
+        <div class="tab-pane fade" id="artist_add">
+          <form class="form-horizontal" method="post" action="/artistadd" width="500px" id="artist_form">
+            <fieldset>
+              <legend>添加美甲师</legend>
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="输入姓名" required />
+                </div>
+              </div> 
+              <div class="form-group">
+                <label for="sex" class="col-sm-2 control-label">性别</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" id="inlineCheckbox2" name="sex" value="男"> 男
+                  </label> 
+                  <label class="radio-inline">
+                    <input type="radio" id="inlineCheckbox1" name="sex" value="女" checked> 女
+                  </label> 
+                </div>
+              </div> 
+              <div class="form-group">
+                <label for="birthday" class="col-sm-2 control-label">生日</label>
+                <div class="col-sm-10">
+                  <input type="date" name="birthday" class="form-control" id="birthday" placeholder="生日" value="1988-04-07"/>
+                </div>
+              </div> 
+              <div class="form-group">
+                <label for="tel" class="col-sm-2 control-label">电话</label>
+                <div class="col-sm-10">
+                  <input type="tel" name="tel" class="form-control" id="tel" placeholder="电话" />
+                </div>
+              </div> 
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">添加</button>
+                <a id="cacelAddArtist" class="btn btn-default" href="#artist" data-toggle="tab">取消</a>
+              </div>
+            </fieldset>
+          </form>
+        </div>
 
         <!-- 项目列表 -->
         <div class="tab-pane fade" id="project">

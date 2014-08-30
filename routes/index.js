@@ -227,11 +227,10 @@ module.exports = function(app) {
     app.get('/artist', checkLogin);
     app.get('/artist', function(req, res) {
         Artist.find(function(err, artists) {
-            res.render('artist/list', {
-                layout: false,
-                title: '美甲师管理',
-                artists: artists
-            });
+            if (err) {
+                return res.send(err);
+            }
+            res.send(artists);
         });
     });
     app.get('/artistadd', function(req, res) {
@@ -252,22 +251,35 @@ module.exports = function(app) {
             birthday: req.body.birthday,
             tel: req.body.tel
         });
-        artist.save(function(err) {
+        artist.save(function(err, art) {
             if (err) {
-                req.flash('error', '用户名重复！');
-                return res.redirect('/artistadd');
+                return res.send({
+                    error: '用户名重复！'
+                });
             }
-            res.redirect('/artist');
+            res.send(art);
         });
     });
     app.get('/artistdel/:id', function(req, res) {
         var id = req.params.id;
         if (id == null) {
-            req.flash('error', 'id不能为空');
-            return res.redirect('/artist');
+            return res.send({
+                error: 'id不能为空'
+            });
         }
-        Artist.del(parseInt(id), function(err, a) {
-            res.redirect('/artist');
+        Artist.findOne({
+            id: parseInt(id)
+        }, function(err, doc) {
+            if (err) {
+                res.send({
+                    error: err
+                });
+                return;
+            }
+            doc.remove();
+            res.send({
+                success: true
+            });
         });
     });
     //项目管理

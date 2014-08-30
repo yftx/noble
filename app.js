@@ -26,7 +26,7 @@ app.use(connect.cookieParser());
 app.use(connect.session({
     secret: '123456',
     cookie: {
-        maxAge: 30000
+        maxAge: 3000000
     }
 }));
 app.use(function(req, res, next) {

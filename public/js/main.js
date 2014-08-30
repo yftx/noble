@@ -34,9 +34,6 @@ require(['jquery', 'dialog/src/dialog', 'jquery-ui', 'bootstrap', 'noble', 'knoc
             case "#topup_query":
                 listTopup(1);
                 break;
-            case "#artist":
-                listArtist(1);
-                break; 
             case "#serial_query":
                 listSerial(1);
                 break;
@@ -49,17 +46,31 @@ require(['jquery', 'dialog/src/dialog', 'jquery-ui', 'bootstrap', 'noble', 'knoc
         $('#login_form').hide();
     });
 
-    $('#project_form').ajaxForm(function(data) {
-        if(!data.error) {
-            $('#cacelAddProject').tab('show');
-           overallViewModel.addProject(data);
+    $('#artist_form').ajaxForm(function(data) {
+        if (!data.error) {
+            $('#cacelAddArtist').tab('show');
+            overallViewModel.addArtist(data);
         } else {
-          var d = dialog({
-              content: data.error,
-              quickClose: true,
-              width: 200
-          });
-          d.show();
+            var d = dialog({
+                content: data.error,
+                quickClose: true,
+                width: 200
+            });
+            d.show();
+        }
+    });
+
+    $('#project_form').ajaxForm(function(data) {
+        if (!data.error) {
+            $('#cacelAddProject').tab('show');
+            overallViewModel.addProject(data);
+        } else {
+            var d = dialog({
+                content: data.error,
+                quickClose: true,
+                width: 200
+            });
+            d.show();
         }
     });
 });
