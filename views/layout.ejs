@@ -6,9 +6,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen"> 
     <link href="/css/jquery-ui.css" rel="stylesheet" media="screen"> 
     <link href="/css/starter-template.css" rel="stylesheet"> 
-    <link href="/css/justified-nav.css" rel="stylesheet" media="screen"> 
-    <script data-main="/js/main" src="/js/require.js"></script>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <link href="/css/justified-nav.css" rel="stylesheet" media="screen">     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
@@ -30,7 +28,7 @@
           <ul class="nav nav-justified" role="tablist" id="myTab">
             <li class="active"><a href="#home" role="tab" data-toggle="tab">贵族美甲</a></li>
             <li><a href="#user_query" role="tab" data-toggle="tab">会员管理</a></li>
-            <li><a href="#topup_query" role="tab" data-toggle="tab">充值记录</a></li>
+            <li><a href="#topup_query" role="tab" data-toggle="tab" data-bind="click: listTopups">充值记录</a></li>
             <li><a href="#artist" role="tab" data-toggle="tab" data-bind="click: listArtist">美甲师管理</a></li>
             <li><a href="#project" role="tab" data-toggle="tab" data-bind="click: listProject">项目管理</a></li>
             <li><a href="#serial_query" role="tab" data-toggle="tab">流水管理</a></li> 
@@ -41,18 +39,7 @@
       </div>
     </nav>
 
-    <div id="wrap" class="container">
-      <% if (success && success.length > 0) { %>
-        <div class="alert alert-success">
-          <%= success %>
-        </div>
-      <% } %>
-
-      <% if (error && error.length > 0) { %>
-        <div class="alert alert-warning">
-          <%= error %>
-        </div>
-      <% } %>
+    <div id="wrap" class="container"> 
 
       <div class="tab-content">
         <div class="tab-pane fade in active hero-unit" id="home">
@@ -70,8 +57,43 @@
         </div> 
 
         <div class="tab-pane fade" id="user_query"></div>
-        <div class="tab-pane fade" id="topup_query"></div>
 
+        <!-- 充值记录 -->
+        <div class="tab-pane fade" id="topup_query" data-bind="with: topup">
+          <div class="row">
+            <div class="input-group col-md-offset-6 col-md-6">
+              <label class="sr-only" for="user_name">用户名</label>
+              <input id="user_name" type="text" placeholder="搜索特定用户的充值记录" class="form-control" name="keyword"> 
+              <span class="input-group-btn">
+                <button class="btn btn-primary" data-bind="click: $root.listTopups"><span class="glyphicon glyphicon-search"></span></button>
+              </span>
+            </div>
+          </div>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>会员名</th>
+                <th>充值日期</th>
+                <th>充值金额</th>    
+              </tr>
+            </thead>
+            <tbody data-bind="foreach: topups">     
+              <tr>
+                <td data-bind="text:user"></td>
+                <td data-bind="text:date"></td>
+                <td data-bind="text:money"></td>
+                <td>
+                  <botton title="删除" data-bind="click: $root.removeTopup" class="btn btn-default"><span class="glyphicon glyphicon-minus"></span></botton>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ul class="pagination" data-bind="foreach: ko.utils.range(1, pageCount)">
+            <li data-bind="css: { active: $data == $parent.num }"><a href="#" data-bind="text: $data,click: function() { $root.listTopups($data) }"></a></li>
+          </ul>
+        </div>
+
+        <!-- 美甲师列表 -->
         <div class="tab-pane fade" id="artist">
           <div class="btn-group">
             <a href="#artist_add" data-toggle="tab" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span>新增美甲师</a>
@@ -95,7 +117,7 @@
           </table>
         </div>
 
-        <!-- 美甲师列表 -->
+        <!-- 新增美甲师 -->
         <div class="tab-pane fade" id="artist_add">
           <form class="form-horizontal" method="post" action="/artistadd" width="500px" id="artist_form">
             <fieldset>
@@ -196,4 +218,5 @@
       <p class="text-muted"><a href="javascript:;"> For LaiJie  </a> 2014</p>
     </footer>
   </body>
+  <script data-main="/js/main" src="/js/require.js"></script>
 </html>

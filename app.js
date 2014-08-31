@@ -5,46 +5,51 @@
 var express = require('express'),
     partials = require('express-partials'),
     routes = require('./routes'),
-    http = require('http'),
-    path = require('path'),
-    flash = require('connect-flash'),
-    connect = require('connect'),
-    morgan  = require('morgan');
+    path = require('path');
 
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var errorhandler = require('errorhandler');
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.use(flash()).use(partials()).use(connect.favicon());
-app.use(morgan('dev'));
-app.use(connect.urlencoded());
-app.use(connect.json());
-app.use(connect.cookieParser());
-app.use(connect.session({
+app.use(partials());
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
     secret: '123456',
     cookie: {
         maxAge: 3000000
-    }
+    },
+    saveUninitialized: true,
+    resave: true
 }));
+
 app.use(function(req, res, next) {
     res.locals.user = req.session.user;
-    res.locals.error = req.flash('error');
-    res.locals.success = req.flash('success');
     next();
 }); 
 
 if ('development' == app.get('env')) {
-    app.use(connect.errorHandler());
+    app.use(errorhandler());
 }
 
-app.use(express.static(path.join(__dirname, 'public')));
+routes(app);
 
-app.listen(3001);
-
-console.log('noble service listening on port 3001');
+app.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
 
 Date.prototype.format = function(fmt) { //author: meizz 
     var o = {
@@ -62,4 +67,4 @@ Date.prototype.format = function(fmt) { //author: meizz
     return fmt;
 }
 
-routes(app);
+module.exports = app;

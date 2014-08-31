@@ -15,14 +15,12 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/login', function(req, res) {
+    app.route('/login').get(function(req, res) {
         res.render('login', {
             layout: false,
             title: '登录'
         });
-    });
-
-    app.post('/login', function(req, res) {
+    }).post(function(req, res) {
         if (req.body['account'] == null) {
             req.flash('error', '账号不能为空');
             return res.redirect('/logout');
@@ -72,15 +70,13 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/vipadd', function(req, res) {
+    app.route('/vipadd').get(function(req, res) {
         res.render('vip/add', {
             layout: false,
             title: '添加会员',
             ranks: Utils.ranks
         });
-    });
-
-    app.post('/vipadd', function(req, res) {
+    }).post(function(req, res) {
         var user = req.body.user;
         if (user['name'] == null) {
             return res.send({
@@ -185,8 +181,8 @@ module.exports = function(app) {
     });
 
     //充值记录
-    app.get('/topup/query', checkLogin);
-    app.get('/topup/query', function(req, res) {
+    app.get('/topups', checkLogin);
+    app.get('/topups', function(req, res) {
         var keyword = req.query.keyword || "";
         var num = parseInt(req.query.num) || 1;
         var limit = req.query.limit || 10;
@@ -200,9 +196,28 @@ module.exports = function(app) {
             }
         }
         Topup.findPagination(obj, function(err, pageCount, topups) {
-            res.render('vip/topups', {
-                layout: null,
-                title: '充值记录管理',
+            res.send({
+                num: num,
+                pageCount: pageCount,
+                topups: topups
+            });
+        });
+    });
+    app.post('/topups', function(req, res) {
+        var keyword = req.query.keyword || "";
+        var num = parseInt(req.query.num) || 1;
+        var limit = req.query.limit || 10;
+        var obj = {
+            search: {
+                user: new RegExp(keyword)
+            },
+            page: {
+                num: num,
+                limit: limit
+            }
+        }
+        Topup.findPagination(obj, function(err, pageCount, topups) {
+            res.send({
                 num: num,
                 pageCount: pageCount,
                 topups: topups
@@ -213,13 +228,16 @@ module.exports = function(app) {
     app.get('/topup/del/:id', function(req, res) {
         var id = req.params.id;
         if (id == null) {
-            req.flash('error', 'id不能为空');
-            return res.redirect('/vip');
+            return res.send({
+                error: 'id不能为空'
+            });
         }
         Topup.remove({
             id: parseInt(id)
         }, function(err, user) {
-            res.redirect('/topup/query');
+            res.send({
+                success: true
+            });
         });
     });
 
@@ -231,12 +249,6 @@ module.exports = function(app) {
                 return res.send(err);
             }
             res.send(artists);
-        });
-    });
-    app.get('/artistadd', function(req, res) {
-        res.render('artist/add', {
-            layout: false,
-            title: '添加美甲师'
         });
     });
     app.post('/artistadd', function(req, res) {

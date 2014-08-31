@@ -23,23 +23,16 @@ require(['jquery', 'dialog/src/dialog', 'jquery-ui', 'bootstrap', 'noble', 'knoc
     window.dialog = dialog;
     window.ko = ko;
 
-    var overallViewModel = new OverallViewModel();
-    ko.applyBindings(overallViewModel);
-
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         switch (e.target.hash) {
             case "#user_query":
                 listUser(1);
-                break;
-            case "#topup_query":
-                listTopup(1);
                 break;
             case "#serial_query":
                 listSerial(1);
                 break;
         }
     });
-
 
     $('#login_form').ajaxForm(function(data) {
         overallViewModel.name(data.name);
@@ -73,4 +66,7 @@ require(['jquery', 'dialog/src/dialog', 'jquery-ui', 'bootstrap', 'noble', 'knoc
             d.show();
         }
     });
+
+    var overallViewModel = new OverallViewModel();
+    ko.applyBindings(overallViewModel);
 });

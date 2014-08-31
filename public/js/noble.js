@@ -57,6 +57,42 @@ function OverallViewModel() {
 
     self.name = ko.observable("未登录");
 
+    self.topup = ko.observable();
+
+    self.listTopups = function(page) {
+        var num = 1;
+        var keyword = "";
+        if ($.isNumeric(page)) {
+            num = page;
+        }
+        keyword = $('#user_name').val();
+        $.get('/topups', {
+            num: num,
+            keyword: keyword
+        }, self.topup);
+    }
+
+    self.removeTopup = function() {
+        var topup = this;
+        dialog({
+            title: '提示',
+            content: '确认删除这条充值记录吗？',
+            width: 300,
+            ok: function() {
+                $.get('/topup/del/' + topup.id, {}, function(data) {
+                    if (data.error) {
+                        showDialog(data.error);
+                        return;
+                    }
+                    self.listTopups(1);
+                });
+            },
+            okValue: '确定',
+            cancelValue: '取消',
+            cancel: true
+        }).show();
+    }
+
     self.projects = ko.observableArray([]);
 
     self.artists = ko.observableArray([]);
