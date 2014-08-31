@@ -203,27 +203,6 @@ module.exports = function(app) {
             });
         });
     });
-    app.post('/topups', function(req, res) {
-        var keyword = req.query.keyword || "";
-        var num = parseInt(req.query.num) || 1;
-        var limit = req.query.limit || 10;
-        var obj = {
-            search: {
-                user: new RegExp(keyword)
-            },
-            page: {
-                num: num,
-                limit: limit
-            }
-        }
-        Topup.findPagination(obj, function(err, pageCount, topups) {
-            res.send({
-                num: num,
-                pageCount: pageCount,
-                topups: topups
-            });
-        });
-    });
 
     app.get('/topup/del/:id', function(req, res) {
         var id = req.params.id;
@@ -326,8 +305,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/serialadd', checkLogin);
-    app.get('/serialadd', function(req, res) {
+    app.route('/serialadd').get(checkLogin).get(function(req, res) {
         async.parallel([
 
             function(callback) {
@@ -336,7 +314,7 @@ module.exports = function(app) {
                 });
             },
             function(callback) {
-                Artist.getAll(function(err, artists) {
+                Artist.find(function(err, artists) {
                     callback(err, artists);
                 });
             }
@@ -348,9 +326,7 @@ module.exports = function(app) {
                 artists: result[1]
             });
         });
-    });
-
-    app.post('/serialadd', function(req, res) {
+    }).post(function(req, res) {
         var serial = req.body.serial;
         if (serial['vip'] == null) {
             req.flash('error', '会员不能为空');
