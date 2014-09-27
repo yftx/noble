@@ -1,14 +1,19 @@
-var mongo = require('./mongodb');
-var Schema = mongo.mongoose.Schema;
+var mongoose = require('./mongodb').mongoose;
 
-var TopupSchema = new Schema({
+var TopupSchema = mongoose.Schema({
 	id: Number,
 	user: String,
 	date: Date,
 	money: Number
 });
 
-var Topup = mongo.mongoose.model('Topup',TopupSchema);
+TopupSchema.methods.speak = function() {
+	var greating = '亲爱的' + this.user + '，你在' + this.date + '充值了' + this.money + '元。';
+	console.log(greating);
+	return greating;
+}
+
+var Topup = mongoose.model('Topup',TopupSchema);
 
 Topup.findPagination = function(obj,callback) {
 	var q = obj.search||{};
