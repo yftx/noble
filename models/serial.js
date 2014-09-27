@@ -21,9 +21,7 @@ SerialDAO.prototype.findPagination = function(obj, callback) {
     var resultsPerPage = obj.page.limit || 5;
 
     var skipFrom = (pageNumber * resultsPerPage) - resultsPerPage;
-    var query = Serial.find(q, col).sort({
-        date: -1
-    }).skip(skipFrom).limit(resultsPerPage);
+    var query = Serial.find(q, col).sort('-date').skip(skipFrom).limit(resultsPerPage);
 
     query.exec(function(error, results) {
         if (error) {
